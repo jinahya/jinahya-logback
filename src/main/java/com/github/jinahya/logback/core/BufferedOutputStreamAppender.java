@@ -126,9 +126,9 @@ public class BufferedOutputStreamAppender<E> extends OutputStreamAppender<E> {
 
 
     /**
-     * Returns a String representing the buffered records.
+     * Returns a string representing the buffered records.
      *
-     * @return a String representing of buffered records.
+     * @return a string representing of buffered records.
      *
      * @see #toString(java.nio.charset.Charset)
      */
