@@ -116,6 +116,10 @@
         <version>2.9.1</version>
         <configuration>
           <additionalparam>-Xdoclint:none</additionalparam>
+          <links>
+            <link>http://slf4j.org/api/</link>
+            <link>http://logback.qos.ch/apidocs/</link>
+          </links>
         </configuration>
       </plugin>
       <plugin>
@@ -153,6 +157,10 @@
         <version>2.9.1</version>
         <configuration>
           <additionalparam>-Xdoclint:none</additionalparam>
+          <links>
+            <link>http://slf4j.org/api/</link>
+            <link>http://logback.qos.ch/apidocs/</link>
+          </links>
         </configuration>
       </plugin>
       <plugin>
@@ -196,7 +204,7 @@
 
   <!-- More Project Information -->
   <name>${project.artifactId}</name>
-  <url>http://jinahya.github.io/jinahya-logback/site/${project.version}</url>
+  <url>http://jinahya.github.io/jinahya-logback/sites/${project.version}</url>
   <inceptionYear>2014</inceptionYear>
   <licenses>
     <license>
