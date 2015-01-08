@@ -184,6 +184,10 @@ public class BufferedOutputStreamAppender<E> extends OutputStreamAppender<E> {
     public void setLimit(final int limit) {
 
         this.limit = limit;
+
+        if (this.limit < 0) {
+            logger.warn("negative limit: {}", this.limit);
+        }
     }
 
 
