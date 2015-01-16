@@ -41,7 +41,7 @@ public final class LogRecorder {
      * @param logger the logger instance.
      * @param pattern the pattern
      * @param charset the charset
-     * @param limit the maximum bytes to hold.
+     * @param limit the maximum number of bytes to hold.
      *
      * @return a LogRecoder instance.
      */
@@ -123,30 +123,6 @@ public final class LogRecorder {
     }
 
 
-//    public static <T extends Appendable> T finish(
-//        final LogRecorder recorder,
-//        final T appendable)
-//        throws IOException {
-//
-//        final org.slf4j.Logger logger = getLogger(lookup().lookupClass());
-//
-//        logger.trace("finish({}, {})", recorder, appendable);
-//
-//        if (recorder == null) {
-//            throw new NullPointerException("null recorder");
-//        }
-//
-//        if (appendable == null) {
-//            throw new NullPointerException("null appendable");
-//        }
-//
-//        recorder.stop();
-//
-//        appendable.append(new String(recorder.appender.toByteArray(),
-//                                     recorder.encoder.getCharset()));
-//
-//        return appendable;
-//    }
     private LogRecorder(
         final Logger logger,
         final BufferedOutputStreamAppender<ILoggingEvent> appender,
@@ -170,21 +146,21 @@ public final class LogRecorder {
 
     private synchronized void start() {
 
-        logger_.debug("start()");
+        logger_.trace("start()");
 
         if (started) {
-            logger_.debug("already started");
+            logger_.trace("already started");
             return;
         }
 
         encoder.start();
-        logger_.debug("encoder startede");
+        logger_.trace("encoder startede");
 
         appender.start();
-        logger_.debug("appender started");
+        logger_.trace("appender started");
 
         logger.addAppender(appender);
-        logger_.debug("appender attached");
+        logger_.trace("appender attached");
 
         started = true;
     }
@@ -192,15 +168,15 @@ public final class LogRecorder {
 
     private synchronized void stop() {
 
-        logger_.debug("stop()");
+        logger_.trace("stop()");
 
         if (!started) {
-            logger_.debug("not started yet");
+            logger_.trace("not started yet");
             return;
         }
 
         final boolean detached = logger.detachAppender(appender);
-        logger_.debug("appender detached: {}", detached);
+        logger_.trace("appender detached: {}", detached);
 
         appender.stop();
 

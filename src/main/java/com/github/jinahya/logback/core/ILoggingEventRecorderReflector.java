@@ -73,12 +73,21 @@ public class ILoggingEventRecorderReflector {
                 = Class.forName(I_LOGGING_EVENT_RECORDER_NAME);
             LOGBACK_LOGGER_CLASS = Class.forName(LOGBACK_LOGGER_NAME);
             SLF4J_LOGGER_CLASS = Class.forName(SLF4J_LOGGER_NAME);
-            START_WITH_LOGBACK_LOGGER = I_LOGGING_EVENT_RECORDER_CLASS.getMethod("start", LOGBACK_LOGGER_CLASS, Integer.TYPE);
-            START_WITH_SLF4J_LOGGER = I_LOGGING_EVENT_RECORDER_CLASS.getMethod("start", SLF4J_LOGGER_CLASS, Integer.TYPE);
-            FINISH = I_LOGGING_EVENT_RECORDER_CLASS.getMethod("finish", I_LOGGING_EVENT_RECORDER_CLASS);
-            FINISH_WITH_LIST = I_LOGGING_EVENT_RECORDER_CLASS.getMethod("finish", I_LOGGING_EVENT_RECORDER_CLASS, List.class);
-            FINISH_WITH_LAYOUT_AND_APPENDABLE = I_LOGGING_EVENT_RECORDER_CLASS.getMethod("finish", I_LOGGING_EVENT_RECORDER_CLASS, Class.forName("ch.qos.logback.core.Layout"), Appendable.class);
-            FINISH_WITH_PATTERN_AND_APPENDABLE = I_LOGGING_EVENT_RECORDER_CLASS.getMethod("finish", I_LOGGING_EVENT_RECORDER_CLASS, String.class, Appendable.class);
+            START_WITH_LOGBACK_LOGGER = I_LOGGING_EVENT_RECORDER_CLASS
+                .getMethod("start", LOGBACK_LOGGER_CLASS, Integer.TYPE);
+            START_WITH_SLF4J_LOGGER = I_LOGGING_EVENT_RECORDER_CLASS.getMethod(
+                "start", SLF4J_LOGGER_CLASS, Integer.TYPE);
+            FINISH = I_LOGGING_EVENT_RECORDER_CLASS.getMethod(
+                "finish", I_LOGGING_EVENT_RECORDER_CLASS);
+            FINISH_WITH_LIST = I_LOGGING_EVENT_RECORDER_CLASS.getMethod(
+                "finish", I_LOGGING_EVENT_RECORDER_CLASS, List.class);
+            FINISH_WITH_LAYOUT_AND_APPENDABLE = I_LOGGING_EVENT_RECORDER_CLASS
+                .getMethod("finish", I_LOGGING_EVENT_RECORDER_CLASS,
+                           Class.forName("ch.qos.logback.core.Layout"),
+                           Appendable.class);
+            FINISH_WITH_PATTERN_AND_APPENDABLE = I_LOGGING_EVENT_RECORDER_CLASS
+                .getMethod("finish", I_LOGGING_EVENT_RECORDER_CLASS,
+                           String.class, Appendable.class);
         } catch (final ReflectiveOperationException roe) {
             roe.printStackTrace(System.err);
             throw new InstantiationError(
@@ -118,19 +127,17 @@ public class ILoggingEventRecorderReflector {
     }
 
 
-    public static Object finishWithLayoutAndAppendable(final Object recorder,
-                                                       final Object layout,
-                                                       final Object appendable)
+    public static Object finishWithLayoutAndAppendable(
+        final Object recorder, final Object layout, final Object appendable)
         throws ReflectiveOperationException {
 
-        return FINISH_WITH_LAYOUT_AND_APPENDABLE.invoke(null, recorder, layout,
-                                                        appendable);
+        return FINISH_WITH_LAYOUT_AND_APPENDABLE.invoke(
+            null, recorder, layout, appendable);
     }
 
 
-    public static Object finishWithPatternAndAppendable(final Object recorder,
-                                                        final Object pattern,
-                                                        final Object appendable)
+    public static Object finishWithPatternAndAppendable(
+        final Object recorder, final Object pattern, final Object appendable)
         throws ReflectiveOperationException {
 
         return FINISH_WITH_PATTERN_AND_APPENDABLE.invoke(

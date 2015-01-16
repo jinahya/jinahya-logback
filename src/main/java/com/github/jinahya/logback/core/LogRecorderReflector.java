@@ -57,22 +57,18 @@ public class LogRecorderReflector {
 
     private static final Method FINISH;
 
-//
-//    private static final Method FINISH_WITH_LIST;
-//
-//
-//    private static final Method FINISH_WITH_LAYOUT_AND_APPENDABLE;
-//
-//
-//    private static final Method FINISH_WITH_PATTERN_AND_APPENDABLE;
 
     static {
         try {
             LOG_RECORDER_CLASS = Class.forName(LOG_RECORDER_NAME);
             LOGBACK_LOGGER_CLASS = Class.forName(LOGBACK_LOGGER_NAME);
             SLF4J_LOGGER_CLASS = Class.forName(SLF4J_LOGGER_NAME);
-            START_WITH_LOGBACK_LOGGER = LOG_RECORDER_CLASS.getMethod("start", LOGBACK_LOGGER_CLASS, String.class, Charset.class, Integer.TYPE);
-            START_WITH_SLF4J_LOGGER = LOG_RECORDER_CLASS.getMethod("start", SLF4J_LOGGER_CLASS, String.class, Charset.class, Integer.TYPE);
+            START_WITH_LOGBACK_LOGGER = LOG_RECORDER_CLASS.getMethod(
+                "start", LOGBACK_LOGGER_CLASS, String.class, Charset.class,
+                Integer.TYPE);
+            START_WITH_SLF4J_LOGGER = LOG_RECORDER_CLASS.getMethod(
+                "start", SLF4J_LOGGER_CLASS, String.class, Charset.class,
+                Integer.TYPE);
             FINISH = LOG_RECORDER_CLASS.getMethod("finish", LOG_RECORDER_CLASS);
         } catch (final ReflectiveOperationException roe) {
             roe.printStackTrace(System.err);
@@ -82,6 +78,21 @@ public class LogRecorderReflector {
     }
 
 
+    /**
+     * Invokes
+     * {@link LogRecorder#start(ch.qos.logback.classic.Logger, java.lang.String, java.nio.charset.Charset, int)}
+     * using reflection.
+     *
+     * @param logger the logger
+     * @param pattern the pattern.
+     * @param charset the charset.
+     * @param limit the limit
+     *
+     * @return a {@link LogRecorder} instance.
+     *
+     * @throws ReflectiveOperationException if a reflective operation error
+     * occurs.
+     */
     public static Object start(final Object logger, final String pattern,
                                final Charset charset, final int limit)
         throws ReflectiveOperationException {
@@ -101,6 +112,18 @@ public class LogRecorderReflector {
     }
 
 
+    /**
+     * Invokes
+     * {@link LogRecorder#finish(com.github.jinahya.logback.core.LogRecorder)}
+     * method using reflection.
+     *
+     * @param recorder the recorder to finish
+     *
+     * @return a buffered log records
+     *
+     * @throws ReflectiveOperationException if a reflective operation error
+     * occurs.
+     */
     public static String finish(final Object recorder)
         throws ReflectiveOperationException {
 
