@@ -24,7 +24,6 @@ import java.io.IOException;
 import static java.lang.invoke.MethodHandles.lookup;
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -36,7 +35,7 @@ import org.testng.annotations.Test;
  *
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
-public class ILoggingEventRecoderTest {
+public class ILoggingEventRecorderTest {
 
 
     @Test(enabled = false)
@@ -64,7 +63,7 @@ public class ILoggingEventRecoderTest {
 
 
     @Test(enabled = false)
-    public void startAndFinishWithList() {
+    public void startAndFinish() {
 
         final ILoggingEventRecorder recorder = ILoggingEventRecorder.start(
             (ch.qos.logback.classic.Logger) logger, 100);
@@ -75,9 +74,9 @@ public class ILoggingEventRecoderTest {
         logger.warn("warn");
         logger.error("error");
 
-        final List<ILoggingEvent> list
-            = ILoggingEventRecorder.finish(recorder, new ArrayList<>());
-        logger.debug("list: {}", list);
+        final List<ILoggingEvent> events
+            = ILoggingEventRecorder.finish(recorder);
+        logger.debug("events: {}", events);
     }
 
 

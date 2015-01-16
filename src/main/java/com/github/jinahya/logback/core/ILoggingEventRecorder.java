@@ -63,12 +63,26 @@ public final class ILoggingEventRecorder {
     }
 
 
+    public static ILoggingEventRecorder start(final org.slf4j.Logger logger,
+                                              final int maxSize) {
+
+        if (logger == null) {
+            throw new NullPointerException("null logger");
+        }
+
+        if (!Logger.class.isInstance(logger)) {
+            throw new IllegalArgumentException(
+                "logger(" + logger + ") is not an instance of " + Logger.class);
+        }
+
+        return start(Logger.class.cast(logger), maxSize);
+    }
+
+
     public static List<ILoggingEvent> finish(
-        final ILoggingEventRecorder recorder, final List<ILoggingEvent> list) {
+        final ILoggingEventRecorder recorder) {
 
-        list.addAll(recorder.stop());
-
-        return list;
+        return recorder.stop();
     }
 
 
