@@ -19,6 +19,7 @@ package com.github.jinahya.logback.core;
 
 
 import java.lang.reflect.Method;
+import java.util.List;
 
 
 /**
@@ -57,7 +58,9 @@ public class ILoggingEventRecorderReflector {
     private static final Method FINISH;
 
 
-//    private static final Method FINISH_WITH_LIST;
+    private static final Method FINISH_WITH_LIST;
+
+
     private static final Method FINISH_WITH_LAYOUT_AND_APPENDABLE;
 
 
@@ -73,7 +76,7 @@ public class ILoggingEventRecorderReflector {
             START_WITH_LOGBACK_LOGGER = I_LOGGING_EVENT_RECORDER_CLASS.getMethod("start", LOGBACK_LOGGER_CLASS, Integer.TYPE);
             START_WITH_SLF4J_LOGGER = I_LOGGING_EVENT_RECORDER_CLASS.getMethod("start", SLF4J_LOGGER_CLASS, Integer.TYPE);
             FINISH = I_LOGGING_EVENT_RECORDER_CLASS.getMethod("finish", I_LOGGING_EVENT_RECORDER_CLASS);
-//            FINISH_WITH_LIST = I_LOGGING_EVENT_RECORDER_CLASS.getMethod("finsih", I_LOGGING_EVENT_RECORDER_CLASS, List.class);
+            FINISH_WITH_LIST = I_LOGGING_EVENT_RECORDER_CLASS.getMethod("finish", I_LOGGING_EVENT_RECORDER_CLASS, List.class);
             FINISH_WITH_LAYOUT_AND_APPENDABLE = I_LOGGING_EVENT_RECORDER_CLASS.getMethod("finish", I_LOGGING_EVENT_RECORDER_CLASS, Class.forName("ch.qos.logback.core.Layout"), Appendable.class);
             FINISH_WITH_PATTERN_AND_APPENDABLE = I_LOGGING_EVENT_RECORDER_CLASS.getMethod("finish", I_LOGGING_EVENT_RECORDER_CLASS, String.class, Appendable.class);
         } catch (final ReflectiveOperationException roe) {
@@ -107,12 +110,14 @@ public class ILoggingEventRecorderReflector {
     }
 
 
-//    public static Object finishWithList(final Object recorder,
-//                                        final Object list)
-//        throws ReflectiveOperationException {
-//
-//        return FINISH_WITH_LIST.invoke(null, recorder, list);
-//    }
+    public static Object finishWithList(final Object recorder,
+                                        final Object list)
+        throws ReflectiveOperationException {
+
+        return FINISH_WITH_LIST.invoke(null, recorder, list);
+    }
+
+
     public static Object finishWithLayoutAndAppendable(final Object recorder,
                                                        final Object layout,
                                                        final Object appendable)

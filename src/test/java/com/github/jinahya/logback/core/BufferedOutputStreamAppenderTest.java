@@ -38,7 +38,7 @@ import org.testng.annotations.Test;
 public class BufferedOutputStreamAppenderTest {
 
 
-    @Test(enabled = false, invocationCount = 128)
+    @Test(enabled = true, invocationCount = 1)
     public void test() {
 
         final LoggerContext context;
@@ -66,14 +66,17 @@ public class BufferedOutputStreamAppenderTest {
             = new BufferedOutputStreamAppender<>();
         appender.setContext(context);
         appender.setEncoder(encoder);
+        appender.setLimit(100);
         appender.start();
 
         ((ch.qos.logback.classic.Logger) logger).addAppender(appender);
 
-        logger.debug("debug");
-        logger.info("info");
-        logger.warn("warn", new Exception("error"));
-        logger.error("error", new Exception("error"));
+        for (int i = 0; i < 5; i++) {
+            logger.debug("debug: {}", i);
+            logger.info("info: {}", i);
+            logger.warn("warn: {}", i);
+            logger.error("error: {}", i);
+        }
 
         ((ch.qos.logback.classic.Logger) logger).detachAppender(appender);
 
@@ -81,8 +84,7 @@ public class BufferedOutputStreamAppenderTest {
 
         encoder.stop();
 
-        logger.debug("string: {}", appender.toString());
-        logger.debug("string: {}", appender.toString(encoder.getCharset()));
+        logger.debug("string: {}", appender.toString(encoder.getCharset()).replace("\n", "\\n"));
     }
 
 

@@ -19,7 +19,6 @@ package com.github.jinahya.logback.core;
 
 
 import ch.qos.logback.core.OutputStreamAppender;
-import ch.qos.logback.core.encoder.LayoutWrappingEncoder;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -40,12 +39,6 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class BufferedOutputStreamAppender<E> extends OutputStreamAppender<E> {
 
 
-//    public BufferedOutputStreamAppender() {
-//
-//        super();
-//
-////        setOutputStream(buffer);
-//    }
     @Override
     public void start() {
 
@@ -83,10 +76,8 @@ public class BufferedOutputStreamAppender<E> extends OutputStreamAppender<E> {
         records.add(record);
         length += record.length;
 
-        if (limit >= 0) {
-            while (length > limit && !records.isEmpty()) {
-                length -= records.remove(0).length;
-            }
+        while (limit >= 0 && length > limit && !records.isEmpty()) {
+            length -= records.remove(0).length;
         }
     }
 
@@ -122,25 +113,6 @@ public class BufferedOutputStreamAppender<E> extends OutputStreamAppender<E> {
         }
 
         return array;
-    }
-
-
-    /**
-     * Returns a string representing the buffered records.
-     *
-     * @return a string representing of buffered records.
-     *
-     * @see #toString(java.nio.charset.Charset)
-     */
-    @Override
-    public String toString() {
-
-        Charset charset = null;
-        if (encoder != null && encoder instanceof LayoutWrappingEncoder) {
-            charset = ((LayoutWrappingEncoder) encoder).getCharset();
-        }
-
-        return toString(charset);
     }
 
 

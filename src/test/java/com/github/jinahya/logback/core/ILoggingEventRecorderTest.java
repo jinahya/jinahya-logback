@@ -114,7 +114,7 @@ public class ILoggingEventRecorderTest {
         logger.error("error");
 
         final StringBuilder appender = ILoggingEventRecorder.finish(
-            recorder, "with pattern: %message%n", new StringBuilder());
+            recorder, "with pattern: %date{HH:mm:ss} [%thread] %-5level %class %method - %message%n", new StringBuilder());
         logger.debug("appended: {}", appender.toString());
     }
 

@@ -26,7 +26,6 @@ import ch.qos.logback.core.read.CyclicBufferAppender;
 import java.io.IOException;
 import static java.lang.invoke.MethodHandles.lookup;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -55,8 +54,6 @@ public final class ILoggingEventRecorder {
         final ILoggingEventRecorder recorder
             = new ILoggingEventRecorder(logger, appender);
 
-        recorder.logger.detachAppender(recorder.appender);
-
         recorder.start();
 
         return recorder;
@@ -80,9 +77,21 @@ public final class ILoggingEventRecorder {
 
 
     public static List<ILoggingEvent> finish(
+        final ILoggingEventRecorder recorder,
+        final List<ILoggingEvent> events) {
+
+        events.addAll(recorder.events());
+
+        recorder.stop();
+
+        return events;
+    }
+
+
+    public static List<ILoggingEvent> finish(
         final ILoggingEventRecorder recorder) {
 
-        return recorder.stop();
+        return finish(recorder, new ArrayList<ILoggingEvent>());
     }
 
 
@@ -111,13 +120,20 @@ public final class ILoggingEventRecorder {
         if (layout.getContext() == null) {
             layout.setContext(recorder.logger.getLoggerContext());
         }
-        if (!layout.isStarted()) {
+        final boolean started = layout.isStarted();
+        if (!started) {
             layout.start();
         }
 
-        for (final ILoggingEvent event : recorder.stop()) {
+        for (final ILoggingEvent event : recorder.events()) {
             appendable.append(layout.doLayout(event));
         }
+
+        if (!started) {
+            layout.stop();
+        }
+
+        recorder.stop();
 
         return appendable;
     }
@@ -170,6 +186,20 @@ public final class ILoggingEventRecorder {
     }
 
 
+    private List<ILoggingEvent> events() {
+
+        logger_.debug("events()");
+
+        final int length = appender.getLength();
+        final List<ILoggingEvent> events = new ArrayList<>(length);
+        for (int i = 0; i < length; i++) {
+            events.add(appender.get(i));
+        }
+
+        return events;
+    }
+
+
     private synchronized void start() {
 
         logger_.debug("start()");
@@ -189,13 +219,13 @@ public final class ILoggingEventRecorder {
     }
 
 
-    private synchronized List<ILoggingEvent> stop() {
+    private synchronized void stop() {
 
         logger_.debug("stop()");
 
         if (!started) {
             logger_.debug("not started yet");
-            return Collections.emptyList();
+            return;
         }
 
         final boolean detached = logger.detachAppender(appender);
@@ -211,8 +241,6 @@ public final class ILoggingEventRecorder {
         logger_.debug("appender stopped");
 
         started = false;
-
-        return list;
     }
 
 
