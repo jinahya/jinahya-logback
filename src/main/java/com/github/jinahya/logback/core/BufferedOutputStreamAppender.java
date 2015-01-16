@@ -203,16 +203,6 @@ public class BufferedOutputStreamAppender<E> extends OutputStreamAppender<E> {
 
 
     /**
-     * Resets buffered records and length.
-     */
-    public void reset() {
-
-        records.clear();
-        length = 0;
-    }
-
-
-    /**
      * logger.
      */
     private transient final Logger logger = getLogger(lookup().lookupClass());

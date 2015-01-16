@@ -38,7 +38,7 @@ import org.testng.annotations.Test;
 public class BufferedOutputStreamAppenderTest {
 
 
-    @Test(invocationCount = 128)
+    @Test(enabled = false, invocationCount = 128)
     public void test() {
 
         final LoggerContext context;
